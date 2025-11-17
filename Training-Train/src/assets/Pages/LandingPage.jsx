@@ -23,6 +23,24 @@ export default function LandingPage() {
     els.forEach((el) => el && observer.observe(el))
     return () => observer.disconnect()
   }, [])
+
+  // Preload de imágenes clave del landing
+  useEffect(() => {
+    const urls = [
+      publicImages.interactividad,
+      publicImages.landing1,
+      publicImages.landing2,
+      publicImages.customerLoyalty,
+    ].filter(Boolean)
+    urls.forEach((u) => {
+      try {
+        const img = new Image()
+        img.decoding = 'async'
+        img.loading = 'eager'
+        img.src = u
+      } catch {}
+    })
+  }, [])
   return (
     <div className="min-h-screen bg-[#0F172A] text-white">
   <LandingHeader useRoutes />
@@ -72,7 +90,7 @@ export default function LandingPage() {
         >
           <div className="grid gap-6 sm:grid-cols-[1.2fr_1fr] sm:items-center">
             <div>
-              <h2 className="text-xl font-semibold text-amber-300">Formación efectiva para empleados</h2>
+              <h2 className="text-left text-xl font-semibold text-amber-300">Formación efectiva para empleados</h2>
               <p className="mt-3 text-left text-sm leading-relaxed text-white/90">Training train es una plataforma de cursos interactivos para empresas que buscan capacitar a sus empleados de forma efectiva, con contenidos prácticos y medibles.</p>
             </div>
             <div className="flex items-center justify-center">
@@ -92,7 +110,7 @@ export default function LandingPage() {
               <img src={publicImages.landing2} alt="Formas de aprender" className="max-h-40 w-auto rounded-md object-cover" />
             </div>
             <div className="order-1 sm:order-2">
-              <h2 className="text-xl font-semibold text-amber-300">Formas fáciles de aprender</h2>
+              <h2 className="text-left text-xl font-semibold text-amber-300">Formas fáciles de aprender</h2>
               <p className="mt-3 text-left text-sm leading-relaxed text-white/90">Con nuestro sistema game-based, tus empleados podrán recibir recompensas y mantener la motivación al acabar los cursos.</p>
             </div>
           </div>
@@ -106,7 +124,7 @@ export default function LandingPage() {
         >
           <div className="grid gap-6 sm:grid-cols-[1.2fr_1fr] sm:items-center">
             <div>
-              <h2 className="text-xl font-semibold text-amber-300">Un equipo especializado en ayudar</h2>
+              <h2 className="text-left text-xl font-semibold text-amber-300">Un equipo especializado en ayudar</h2>
               <p className="mt-3 text-left text-sm leading-relaxed text-white/90">Contamos con soporte de primera calidad, diseñadores de actividades expertos y seguimiento constante de resultados para darte la mejor experiencia.</p>
             </div>
             <div className="flex items-center justify-center">

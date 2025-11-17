@@ -17,13 +17,18 @@ export default function Pregunta() {
   const selectOption = useActivityStore((s) => s.selectOption)
   const next = useActivityStore((s) => s.next)
   const finishActivity = useActivityStore((s) => s.finishActivity)
+  const resetActivity = useActivityStore((s) => s.resetActivity)
 
   const idx = Number(qIndex)
   const activity = useMemo(() => getActivityById(activityId), [activityId])
 
   useEffect(() => {
-    if (activity) startActivity(activity.id)
-  }, [activity, startActivity])
+    if (activity) {
+      // Reinicia el progreso al comenzar la actividad (primera pregunta)
+      if (idx === 0) resetActivity(activity.id)
+      startActivity(activity.id)
+    }
+  }, [activity, startActivity, resetActivity, idx])
 
   if (!activity || Number.isNaN(idx) || idx < 0 || idx >= activity.questions.length) {
     return <Navigate to="/actividades" replace />
@@ -52,10 +57,14 @@ export default function Pregunta() {
         next(activity.id, total)
         navigate(`/actividades/${activity.id}/p/${nextIndex}`)
       } else {
-        // calcular score simple: proporción de correctas
+        // Calcular score por última respuesta de cada pregunta (sin duplicados)
         const answers = useActivityStore.getState().progressByActivity[activity.id]?.answers || []
-        const rights = answers.filter((a) => a.correct).length
-        const score = Math.round((rights / total) * 100)
+        const lastByQuestion = new Map()
+        for (const a of answers) {
+          lastByQuestion.set(a.questionId, a)
+        }
+        const rights = Array.from(lastByQuestion.values()).filter((a) => a.correct).length
+        const score = Math.max(0, Math.min(100, Math.round((rights / total) * 100)))
         const reward = rights * 4
         finishActivity({ score, reward })
         navigate('/resultado')

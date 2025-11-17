@@ -50,8 +50,8 @@ export default function Resultado() {
 				{/* Mensajes */}
 				<div className="mt-2 space-y-4">
 								<p className="text-3xl font-extrabold">
-						Tuviste un puntaje de <span className="text-4xl">{score}%</span>
-					</p>
+									Tuviste un puntaje de <span className="text-4xl">{progress}%</span>
+								</p>
 								<p className="text-2xl text-zinc-700 dark:text-zinc-200">Ganaste {reward} monedas de recompensa.</p>
 				</div>
 
