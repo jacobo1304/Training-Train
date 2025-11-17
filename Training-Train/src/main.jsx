@@ -35,12 +35,13 @@ function ProtectedRoute({ children }) {
   return children
 }
 
+const basename = import.meta.env.PROD ? '/Training-Train/' : '/'
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeRoot>
       <ToastContainer />
-
-  <BrowserRouter basename="/Training-Train/LandingPage">
+  <BrowserRouter basename={basename}>
         <Routes>
         <Route path="/" element={<App />} />
         <Route path="/login" element={<Login />} />
